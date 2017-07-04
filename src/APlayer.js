@@ -1,5 +1,3 @@
-console.log("\n %c APlayer 1.6.1 %c http://aplayer.js.org \n\n","color: #fadfa3; background: #030307; padding:5px 0;","background: #fadfa3; padding:5px 0;");
-
 require('./APlayer.scss');
 
 let instances = [];
@@ -474,6 +472,7 @@ class APlayer {
         }
         else if (!this.isMobile && this.audios[indexMusic]) {
             this.audio = this.audios[indexMusic];
+            this.audio.src = this.music.url;
             this.audio.volume = parseInt(this.element.getElementsByClassName('aplayer-volume')[0].style.height) / 100;
             this.audio.currentTime = 0;
         }

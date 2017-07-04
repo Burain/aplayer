@@ -1,12 +1,13 @@
 {
-  "name": "aplayer",
-  "version": "1.6.1",
+  "name": "@yfmd/aplayer",
+  "version": "1.0.0",
   "description": "Wow, such a beautiful html5 music player",
   "main": "dist/APlayer.min.js",
   "scripts": {
     "test": "webpack",
     "build": "webpack",
-    "dev": "WEBPACK_ENV=dev webpack-dev-server --hot --progress --inline --host 0.0.0.0"
+    "dev": "WEBPACK_ENV=dev webpack-dev-server --hot --progress --inline --host 0.0.0.0",
+    "prepublish": "npm run build"
   },
   "repository": {
     "url": "git+https://github.com/DIYgod/APlayer.git",
