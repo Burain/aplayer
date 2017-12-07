@@ -880,6 +880,52 @@ class APlayer {
 
         this.getRandomOrder();
     }
+
+    /**
+     * replace music dynamically
+     *
+     * @param {Array} newMusic
+     */
+    replaceMusic(newMusic = []) {
+        if(!newMusic) return;
+
+        if(Object.prototype.toString.call(newMusic)==='[object Array]') {
+            this.option.music = newMusic;
+    
+            const list = this.element.getElementsByClassName('aplayer-list')[0];
+            const listEle = list.getElementsByTagName('ol')[0];
+            listEle.innerHTML = '';
+            let newItemHTML = ``;
+            for (let i = 0; i < newMusic.length; i++) {
+                newItemHTML += `
+                    <li>
+                        <span class="aplayer-list-cur" style="background: ${this.option.theme};"></span>
+                        <span class="aplayer-list-index">${i + 1}</span>
+                        <span class="aplayer-list-title">${newMusic[i].title}</span>
+                        <span class="aplayer-list-author">${newMusic[i].author}</span>
+                    </li>`
+            }
+            listEle.innerHTML = newItemHTML;
+    
+            if (newMusic.length > 1) {
+                this.multiple = true;
+                this.element.classList.add('aplayer-withlist');
+                this.audio.loop = !(this.multiple || this.mode === 'order');
+                this.setMusic(0);
+            } else {
+                this.multiple = false;
+                this.element.classList.remove('aplayer-withlist');
+                this.audio.loop = !(this.multiple || this.mode === 'order');
+                if(newMusic.length === 1) this.setMusic(0);
+            }
+    
+            list.style.height = 'auto';
+            list.style.height = list.offsetHeight + 'px';
+    
+            this.getRandomOrder();
+
+        }
+    }
 }
 
 module.exports = APlayer;
