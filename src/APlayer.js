@@ -943,7 +943,6 @@ class APlayer {
             list.style.height = list.offsetHeight + 'px';
 
             this.getRandomOrder();
-
         }
     }
 
@@ -1043,6 +1042,13 @@ class APlayer {
         let deletionCounter = this.option.music.length;
         for (let i = 1; i < deletionCounter; i++) {
             this.removeSong(1);
+        }
+    }
+
+    removeAllSong() {
+        let deletionCounter = this.option.music.length;
+        for (let i = 0; i < deletionCounter; i++) {
+            this.removeSong(0);
         }
     }
 }

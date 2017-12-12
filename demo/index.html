@@ -118,7 +118,7 @@
             },
         ])">ap.replaceMusic(...2)</button>
         <button onclick="ap1.replaceMusic()">ap.replaceMusic() empty</button>
-        <button onclick="ap1.removeSong(0)">ap.removeSong() empty</button>
+        <button onclick="ap1.removeSong(1)">ap.removeSong() empty</button>
         <script type="text/javascript">
             function resetMusic() {
                 ap1.removeAllSongExceptCurrentPlaying();
@@ -141,7 +141,8 @@
                 }, );
             }
         </script>
-        <button onclick="resetMusic()">删除所有歌曲，并添加一首新歌曲</button>
+        <button onclick="resetMusic()">删除除当前所有歌曲外所有曲目</button>
+        <button onclick="ap1.removeAllSong()">删除所有歌曲</button>
         <button onclick="addSingleMusic()">新增一条曲目</button>
         <button onclick="ap1.destroy()">ap.destroy()</button>
         <h3>With playlist</h3>
