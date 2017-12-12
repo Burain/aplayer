@@ -2,7 +2,7 @@ var ap1 = new APlayer({
     element: document.getElementById('player1'),
     narrow: false,
     autoplay: true,
-    showlrc: false,
+    showlrc: 1,
     mutex: true,
     theme: '#e6d0b2',
     preload: 'metadata',

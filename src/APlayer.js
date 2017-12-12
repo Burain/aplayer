@@ -79,7 +79,7 @@ class APlayer {
 
         // save lrc
         this.element = this.option.element;
-        if (this.option.showlrc === 2 || this.option.showlrc === true)  {
+        if (this.option.showlrc === 2 || this.option.showlrc === true) {
             this.savelrc = [];
             for (let i = 0; i < this.element.getElementsByClassName('aplayer-lrc-content').length; i++) {
                 this.savelrc.push(this.element.getElementsByClassName('aplayer-lrc-content')[i].innerHTML);
@@ -203,16 +203,16 @@ class APlayer {
             </div>
             <div class="aplayer-list" ${this.option.listmaxheight ? `style="max-height: ${this.option.listmaxheight}` : ``}">
                 <ol>`;
-            for (let i = 0; i < this.option.music.length; i++) {
-                eleHTML += `
+        for (let i = 0; i < this.option.music.length; i++) {
+            eleHTML += `
                     <li>
                         <span class="aplayer-list-cur" style="background: ${this.option.theme};"></span>
                         <span class="aplayer-list-index">${(i + 1)}</span>
                         <span class="aplayer-list-title">${this.option.music[i].title}</span>
                         <span class="aplayer-list-author">${this.option.music[i].author}</span>
                     </li>`
-            }
-            eleHTML += `
+        }
+        eleHTML += `
                 </ol>
             </div>`
         this.element.innerHTML = eleHTML;
@@ -440,7 +440,7 @@ class APlayer {
      */
     setMusic(index) {
         // get this.music
-        if (typeof(index) !== 'undefined') {
+        if (typeof (index) !== 'undefined') {
             this.playIndex = index;
         }
         const indexMusic = this.playIndex;
@@ -489,7 +489,7 @@ class APlayer {
                     setTimeout(() => {
                         this.button.innerHTML = `
                                     <button type="button" class="aplayer-icon aplayer-icon-pause">`
-                            +           this.getSVG('pause')
+                            + this.getSVG('pause')
                             + `     </button>`;
                     }, 100);
 
@@ -525,7 +525,7 @@ class APlayer {
                     setTimeout(() => {
                         this.button.innerHTML = `
                                     <button type="button" class="aplayer-icon aplayer-icon-play">`
-                            +           this.getSVG('play')
+                            + this.getSVG('play')
                             + `     </button>`;
                     }, 100);
                     clearInterval(this.playedTime);
@@ -650,7 +650,7 @@ class APlayer {
                 if (this.option.showlrc === 1) {
                     lrcs = this.option.music[index].lrc;
                 }
-                else if (this.option.showlrc === 2 || this.option.showlrc === true)  {
+                else if (this.option.showlrc === 2 || this.option.showlrc === true) {
                     lrcs = this.savelrc[index];
                 }
                 else if (this.option.showlrc === 3) {
@@ -808,7 +808,7 @@ class APlayer {
             return shuffled;
         }
         if (this.multiple) {
-            this.randomOrder = shuffle([...Array(this.option.music.length)].map(function(item, i) {
+            this.randomOrder = shuffle([...Array(this.option.music.length)].map(function (item, i) {
                 return i;
             }));
         }
@@ -882,16 +882,36 @@ class APlayer {
     }
 
     /**
+     * 单曲模式下，切换歌曲
+     * 
+     * @param {{title:'',author:'',url:'',pic:'',lrc:''}} newMusic 
+     * @memberof APlayer
+     */
+    addMusicInSingleMode(newMusic) {
+        if (!newMusic)
+            throw new DOMException("歌曲信息不能为空");
+        this.option.music.splice(0, 1); // Delete song from music array
+
+        this.audios.splice(0, 1); // Delete song from audios array (Has to be)
+
+        this.lrcs.splice(0, 1); //删除歌词
+
+        this.option.music[0] = newMusic;
+
+        this.setMusic(0);
+    }
+
+    /**
      * replace music dynamically
      *
      * @param {Array} newMusic
      */
     replaceMusic(newMusic = []) {
-        if(!newMusic) return;
+        if (!newMusic) return;
 
-        if(Object.prototype.toString.call(newMusic)==='[object Array]') {
+        if (Object.prototype.toString.call(newMusic) === '[object Array]') {
             this.option.music = newMusic;
-    
+
             const list = this.element.getElementsByClassName('aplayer-list')[0];
             const listEle = list.getElementsByTagName('ol')[0];
             listEle.innerHTML = '';
@@ -906,7 +926,7 @@ class APlayer {
                     </li>`
             }
             listEle.innerHTML = newItemHTML;
-    
+
             if (newMusic.length > 1) {
                 this.multiple = true;
                 this.element.classList.add('aplayer-withlist');
@@ -916,14 +936,113 @@ class APlayer {
                 this.multiple = false;
                 this.element.classList.remove('aplayer-withlist');
                 this.audio.loop = !(this.multiple || this.mode === 'order');
-                if(newMusic.length === 1) this.setMusic(0);
+                if (newMusic.length === 1) this.setMusic(0);
             }
-    
+
             list.style.height = 'auto';
             list.style.height = list.offsetHeight + 'px';
-    
+
             this.getRandomOrder();
 
+        }
+    }
+
+    /**
+     * Remove song from playlist 
+     * 
+     * @param {int} indexOfSong 
+     * @memberof APlayer
+     */
+    removeSong(indexOfSong) {
+
+        if (this.option.music[indexOfSong] != null) { // Check if song exists 
+
+            const list = this.element.getElementsByClassName('aplayer-list')[0];
+
+            var oList = list.firstElementChild; // OL tag
+
+            var liList = []; // Holds the index of the LI tags
+
+            for (let i = 0; i < oList.childNodes.length; i++) {
+
+                if (oList.childNodes[i].tagName == 'LI') {
+                    liList.push(i); //Adds the LI tag indexes to array
+                }
+            }
+
+            if (this.option.music[indexOfSong + 1] != null || this.option.music[indexOfSong - 1] != null) {
+
+                if (indexOfSong == this.playIndex) {
+
+                    if (this.option.music[indexOfSong + 1] != null) { // Play next song if it exists
+
+                        this.pause();
+
+                        this.setMusic(indexOfSong + 1);
+
+                        this.play();
+
+                    } else if (this.option.music[indexOfSong + 1] == null && !this.element.getElementsByClassName('aplayer-button aplayer-play')[0]) { // Play previous song if it exists
+
+                        this.pause();
+
+                        this.setMusic(indexOfSong - 1);
+
+                        this.play();
+
+                    }
+
+                }
+
+                if (oList.childNodes[liList[indexOfSong + 1]] == null) {
+
+                    var targetSong = oList.childNodes[liList[indexOfSong - 1]];
+
+                    targetSong.childNodes[3].textContent = indexOfSong;
+
+                } else {
+
+                    for (let i = 1; i < liList.length; i++) {
+
+                        if (oList.childNodes[liList[indexOfSong + i]] != null) {
+
+                            var targetSong = oList.childNodes[liList[indexOfSong + i]];
+
+                            targetSong.childNodes[3].textContent = indexOfSong + i;
+                        }
+
+                    }
+
+                }
+
+                this.option.music.splice(indexOfSong, 1); // Delete song from music array
+
+                this.audios.splice(indexOfSong, 1); // Delete song from audios array (Has to be)
+
+                this.lrcs.splice(indexOfSong, 1); //删除歌词
+
+                oList.childNodes[liList[indexOfSong]].remove();
+            }
+            list.style.height = "";
+        } else {
+
+            console.error("ERROR: Song does not exist");
+
+        }
+    }
+
+    /**
+     * 删除除当前正播放曲目之外所有歌曲
+     * 
+     * @memberof APlayer
+     */
+    removeAllSongExceptCurrentPlaying() {
+        for (let i = 0; i < this.playIndex && this.playIndex !== 0; i++) {
+            this.removeSong(0);
+        }
+        let deletionCounter = this.option.music.length;
+        for (let i = 1; i < deletionCounter; i++) {
+            this.removeSong(1);
         }
     }
 }
