@@ -417,6 +417,7 @@ class APlayer {
         // toggle menu control
         list.style.height = list.offsetHeight + 'px';
         this.element.getElementsByClassName('aplayer-icon-menu')[0].addEventListener('click', () => {
+            console.log('点击事件');
             if (!list.classList.contains('aplayer-list-hide')) {
                 list.classList.add('aplayer-list-hide');
             }
@@ -857,6 +858,9 @@ class APlayer {
 
         const list = this.element.getElementsByClassName('aplayer-list')[0];
         const listEle = list.getElementsByTagName('ol')[0];
+        if (list.classList.contains('aplayer-list-hide')) {
+            list.classList.remove('aplayer-list-hide');
+        }
         let newItemHTML = ``;
         for (let i = 0; i < newMusic.length; i++) {
             newItemHTML += `
@@ -914,6 +918,10 @@ class APlayer {
 
             const list = this.element.getElementsByClassName('aplayer-list')[0];
             const listEle = list.getElementsByTagName('ol')[0];
+            if (list.classList.contains('aplayer-list-hide')) {
+                list.classList.remove('aplayer-list-hide');
+            }
+
             listEle.innerHTML = '';
             let newItemHTML = ``;
             for (let i = 0; i < newMusic.length; i++) {
