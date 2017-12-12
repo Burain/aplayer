@@ -7,6 +7,7 @@ var ap1 = new APlayer({
     theme: '#e6d0b2',
     preload: 'metadata',
     mode: 'circulation',
+    playListPosition: 'top',
     music: {
         title: 'Preparation',
         author: 'Hans Zimmer/Richard Harvey',

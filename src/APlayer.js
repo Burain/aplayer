@@ -45,7 +45,8 @@ class APlayer {
             mutex: true,
             showlrc: 0,
             theme: '#b7daff',
-            mode: 'circulation'
+            mode: 'circulation',
+            playListPosition: 'bottom'  //播放列表显示位置。可选值['bottom','top']
         };
         for (let defaultKey in defaultOption) {
             if (defaultOption.hasOwnProperty(defaultKey) && !option.hasOwnProperty(defaultKey)) {
@@ -152,8 +153,27 @@ class APlayer {
         }
         this.getRandomOrder();
 
+        this.generatePlayListHTML = () => {
+            let html = `<div class="aplayer-list">
+                        <ol> `;
+            for (let i = 0; i < this.option.music.length; i++) {
+                html += `
+                                    <li>
+                                        <span class="aplayer-list-cur" style="background: ${this.option.theme};"></span>
+                                        <span class="aplayer-list-index">${(i + 1)}</span>
+                                        <span class="aplayer-list-title">${this.option.music[i].title}</span>
+                                        <span class="aplayer-list-author">${this.option.music[i].author}</span>
+                                    </li>`
+            }
+            html += `
+                            </ol>
+                        </div> `
+            return html;
+        }
+
         // fill in HTML
         let eleHTML = `
+            ${this.option.playListPosition === "top" ? this.generatePlayListHTML() : ``}
             <div class="aplayer-pic" ${(this.music.pic ? (`style="background-image: url('${this.music.pic}');"`) : ``)}>
                 <div class="aplayer-button aplayer-play">
                     <button type="button" class="aplayer-icon aplayer-icon-play">
@@ -201,20 +221,7 @@ class APlayer {
                     </div>
                 </div>
             </div>
-            <div class="aplayer-list" ${this.option.listmaxheight ? `style="max-height: ${this.option.listmaxheight}` : ``}">
-                <ol>`;
-        for (let i = 0; i < this.option.music.length; i++) {
-            eleHTML += `
-                    <li>
-                        <span class="aplayer-list-cur" style="background: ${this.option.theme};"></span>
-                        <span class="aplayer-list-index">${(i + 1)}</span>
-                        <span class="aplayer-list-title">${this.option.music[i].title}</span>
-                        <span class="aplayer-list-author">${this.option.music[i].author}</span>
-                    </li>`
-        }
-        eleHTML += `
-                </ol>
-            </div>`
+            ${this.option.playListPosition === "bottom" ? this.generatePlayListHTML() : ``}`
         this.element.innerHTML = eleHTML;
 
         // hide mode button in arrow container
@@ -1042,13 +1049,6 @@ class APlayer {
         let deletionCounter = this.option.music.length;
         for (let i = 1; i < deletionCounter; i++) {
             this.removeSong(1);
-        }
-    }
-
-    removeAllSong() {
-        let deletionCounter = this.option.music.length;
-        for (let i = 0; i < deletionCounter; i++) {
-            this.removeSong(0);
         }
     }
 }
