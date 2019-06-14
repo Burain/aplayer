@@ -1,5 +1,5 @@
 {
-  "name": "@yfmd/aplayer",
+  "name": "@burain/aplayer",
   "version": "1.1.0",
   "description": "Wow, such a beautiful html5 music player",
   "main": "dist/APlayer.min.js",
@@ -10,7 +10,7 @@
     "prepublish": "npm run build"
   },
   "repository": {
-    "url": "git+https://github.com/DIYgod/APlayer.git",
+    "url": "git@github.com:Burain/aplayer.git",
     "type": "git"
   },
   "keywords": [
@@ -18,12 +18,12 @@
     "music",
     "html5"
   ],
-  "author": "DIYgod",
+  "author": "Burain",
   "license": "SATA",
   "bugs": {
-    "url": "https://github.com/DIYgod/APlayer/issues"
+    "url": "https://github.com/Burain/aplayer/issues"
   },
-  "homepage": "https://github.com/DIYgod/APlayer#readme",
+  "homepage": "https://github.com/Burain/aplayer",
   "devDependencies": {
     "autoprefixer": "^7.1.1",
     "babel-core": "^6.22.1",
